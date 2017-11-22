@@ -16,15 +16,18 @@ import java.util.*;
  */
 public class Simulator {
             
-        Field field;
-        SimulatorView view;
-        ArrayList<Creature> actors;
-        RandomGenerator random;
-        int currentStep;
+        public Field field;
+        public SimulatorView view;
+        public ArrayList<Creature> actors;
+        public ArrayList<Creature> newActors;
+        
+        public RandomGenerator random;
+        public int currentStep = 0;
         
         public Simulator(int height, int width)
         {
             actors = new ArrayList<Creature>();
+            newActors = new ArrayList<Creature>();
             random = new RandomGenerator();
             if(height <= 0){
                 height = ModelConstants.DEFAULT_DEPTH;
@@ -36,11 +39,13 @@ public class Simulator {
             view = new SimulatorView(height,width);
             this.populate();
             
+            
+            
         }
         
         public void simulate(int steps)
         {
-            for(int i = 1; i<= steps && view.isViable(field); i++ ){
+            for(int i = 0; i<= steps && view.isViable(field); i++ ){
                 
                 this.simulateOneStep();
             }
@@ -76,28 +81,29 @@ public class Simulator {
                     
                     if(p <= possibleShark){
                         Shark shark = new Shark();
-                        actors.add(shark);
                         shark.setLocation(i, y);
                         view.setColor(Shark.class,new Color(0,191,255));
                         field.place(shark,i,y);
+                        newActors.add(shark);
                         
                     }else if(p > possibleSardine && p <= possiblePlankton){
                         Plankton plankton = new Plankton();
                         view.setColor(Plankton.class, new Color(255,50,50));
                         field.place(plankton, i,y);
                         plankton.setLocation(i, y);
-                        actors.add(plankton);
+                        newActors.add(plankton);
                         
                     }else if(p > possibleShark && p <= possibleSardine){
                         Sardine sardine = new Sardine();
                         view.setColor(Sardine.class,new Color(255,255,55));
                         field.place(sardine,i,y);
                         sardine.setLocation(i,y);
-                        actors.add(sardine);
+                        newActors.add(sardine);
                     }
-                     view.showStatus(0, field);
-                     this.simulate(1);
+                     actors.addAll(newActors);
+                     view.showStatus(0, field); 
                 }
+
             }
             
         }

@@ -23,7 +23,7 @@ public class Sardine extends Fish{
            
            if( location != null)
            {
-               field.clear();
+               //field.clear();
                setLocation(location);
                field.place(this, location);
            }else

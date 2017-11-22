@@ -17,6 +17,7 @@ public class OceanSimulation {
     public static void main(String[] args) {
         
         Simulator simulator = new Simulator(100,100);
+        simulator.simulate(10);
     }
     
 }

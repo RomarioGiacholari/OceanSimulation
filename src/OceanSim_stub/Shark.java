@@ -18,11 +18,11 @@ public class Shark extends Fish{
     
     public void act(Field field)
     {
-           Location location = field.freeAdjacentLocation(getLocation());
            
+           Location location = field.freeAdjacentLocation(getLocation());
            if( location != null)
            {
-               field.clear();
+               //field.clear();
                setLocation(location);
                field.place(this, location);
                
