@@ -8,6 +8,7 @@ package OceanSim_stub;
 import java.awt.Color;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.*;
 
 /**
  *
@@ -18,12 +19,13 @@ public class Simulator {
         Field field;
         SimulatorView view;
         ArrayList<Creature> actors;
+        RandomGenerator random;
         int currentStep;
         
         public Simulator(int height, int width)
         {
             actors = new ArrayList<Creature>();
-            
+            random = new RandomGenerator();
             if(height <= 0){
                 height = ModelConstants.DEFAULT_DEPTH;
             }else if(width <= 0){
@@ -38,7 +40,7 @@ public class Simulator {
         
         public void simulate(int steps)
         {
-            for(int i = 1; i<= steps && field.isViable(); i++ ){
+            for(int i = 1; i<= steps && view.isViable(field); i++ ){
                 
                 this.simulateOneStep();
             }
@@ -47,16 +49,17 @@ public class Simulator {
         public void simulateOneStep()
         {
             this.currentStep ++;
-            
+            Collections.shuffle(actors, random.getRandom());
             for(Creature actor: actors){
                 if(actor.isAlive()){
-                    actor.act(field);
+                    actor.act(field); 
+                    this.view.showStatus(currentStep,field);
                 }
             }
+            //view.showStatus(currentStep, field);
         }
         
         public void populate(){
-            
             double possibleShark = ModelConstants.SHARK_P;
             double possibleSardine = ModelConstants.SARDINE_P;
             double possiblePlankton = ModelConstants.PLANKTON_P;
@@ -93,6 +96,7 @@ public class Simulator {
                         actors.add(sardine);
                     }
                      view.showStatus(0, field);
+                     this.simulate(1);
                 }
             }
             

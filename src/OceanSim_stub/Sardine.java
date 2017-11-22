@@ -17,9 +17,19 @@ public class Sardine extends Fish{
         
     }
     
-    public void act(Field field)
+     public void act(Field field)
     {
-        
+           Location location = field.freeAdjacentLocation(getLocation());
+           
+           if( location != null)
+           {
+               field.clear();
+               setLocation(location);
+               field.place(this, location);
+           }else
+           {
+               setDead();
+           }
     }
     
 }
